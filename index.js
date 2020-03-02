@@ -42,8 +42,32 @@ function query(connection, sql, where=[]){
 
 
 //inquirer Prompts about what user wants to do
-  
+  inquire
+        .prompt([
+            {
+                type: 'list',
+                name: 'choice',
+                message: 'What would you like to do?',
+                choices: ['View All Employees', new inquirer.Separator(),'View All Employees By Department', new inquirer.Separator(),'View All Employees By Manager', new inquirer.Separator(), 
+                        'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager']
 
+            },
+        ]).then(answers => {
+            console.log('Choice: ' , answers.choice);
+            switch (answers.choice) {
+                case ' ';
+                inquire.prompt([
+                    {
+                        type: 'input',
+                        name: '',
+                        messsage: ''
+                    },
+                ]).then()
+                break;
+    
+            }
+        })
+            
 
 //=====================================
 //===========Objectives================
