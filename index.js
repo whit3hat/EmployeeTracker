@@ -25,49 +25,45 @@ connection.connect(function(err) {
     if (err) throw err;
     console.log('connected as id ' + connection.threadId);
     //run the start function after the connection is made to prompt the user
-  
+  start();
 });
-
-function query(connection, sql, where=[]){
-    if (!sql || !sql.length) throw new Error('Sql cannot be empty');
-
-    return new Promise((resolve, reject) =>{
-        connection.query(sql, where, function(err, res){
-            if (err) return reject(err);
-            return resolve(res);
-        });
-    });
-        };
-
 
 
 //inquirer Prompts about what user wants to do
+function start(){
   inquire
-        .prompt([
-            {
-                type: 'list',
-                name: 'choice',
-                message: 'What would you like to do?',
-                choices: ['View All Employees', new inquirer.Separator(),'View All Employees By Department', new inquirer.Separator(),'View All Employees By Manager', new inquirer.Separator(), 
-                        'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager']
+        .prompt([{
+            type: 'list',
+            name: 'choice',
+            message: 'What would you like to do?',
+            choices: ['View All Employees', new inquirer.Separator(),'View All Employees By Department', new inquirer.Separator(),'View All Employees By Manager', new inquirer.Separator(), 
+                    'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager']
 
             },
-        ]).then(answers => {
-            console.log('Choice: ' , answers.choice);
-            switch (answers.choice) {
-                case ' ';
-                inquire.prompt([
-                    {
-                        type: 'input',
-                        name: '',
-                        messsage: ''
-                    },
-                ]).then()
-                break;
-    
+        ]).then(answers => {  //Getting user response from above
+            if ( answers.choice === 'View All Employees'){
+                allEmployees();
             }
-        })
-            
+            else if(answers.choice === 'View All Employees By Department'){
+                allEmployeesDept();
+            }
+            else if(answers.choice === 'View All Employees By Manager'){
+                allEmployeesMgr();
+            }
+            else if(answers.choice === 'Add Employee'){
+                addEmployee();
+            }
+            else if(answers.choice === 'Remove Employee'){
+                removeEmployee();
+            }
+            else if(answers.choice === 'Update Employee Role'){
+                updateEmployeeRole();
+            }
+            else if(answers.choice === 'Update Employee Manager'){
+                updateEmployeeMgr();
+            }
+    });
+}
 
 //=====================================
 //===========Objectives================
