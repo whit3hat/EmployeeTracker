@@ -1,7 +1,7 @@
 //Variables for the project
 const inquire = require('inquirer');
-const consoleTable = require('consle.table');
-const figlet = require('figlet');
+// const consoleTable = require('consle.table');
+// const figlet = require('figlet');
 const mysql = require('mysql');
 
 //mysql connection
@@ -23,56 +23,26 @@ var connection = mysql.createConnection({
 //connect to the mysql server and sql DB
 connection.connect(function(err) {
     if (err) throw err;
+    console.log('connected as id ' + connection.threadId);
     //run the start function after the connection is made to prompt the user
-    start();
+  
 });
 
-//inquirer Prompts about what user wants to do
-function start(){
-    connection.query('SELECT * FROM employee' , function(err, employee){
-        if (err) throw err;
-        
-        inquire
-            .prompt([
-                {
-                    name: 'employee',
-                    type: 'rawlist',
-                    choices: function(){
-                        var employeeArray =[];
-                        for (var i=0; i < results.length; i++){
-                            employeeArray.push(results[i].item_name);
-                        }
-                        return employeeArray;
-                    },
-                }
-            ])
-    })
+function query(connection, sql, where=[]){
+    if (!sql || !sql.length) throw new Error('Sql cannot be empty');
 
-        function emplyeeSearch(){
-            inquire
-                .prompt([
-                    {
-                        name: 'department',
-                        type: 'input',
-                        message: 'Which department?'
-                    }
-                ])
-                .then(function(answer){
-                    connection.query("SELECT * FROM companyinfo_db.department WHERE ?", {
-                        department: answer.department
-                    }, (err, res) =>{
-                        if (err) {
-                            renderError(err);
-                        } else {
-                            renderResponse(res);
-                        }
-                    })
-                    start();
-                });
+    return new Promise((resolve, reject) =>{
+        connection.query(sql, where, function(err, res){
+            if (err) return reject(err);
+            return resolve(res);
+        });
+    });
         };
 
-};
 
+
+//inquirer Prompts about what user wants to do
+  
 
 
 //=====================================
