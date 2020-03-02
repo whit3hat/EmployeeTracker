@@ -67,8 +67,47 @@ function start(){
 
 //search for all employees in DB
 function allEmployees(){
-    connection.query('SELECT * FROM employee')
+    connection.query('SELECT * FROM employee', function(err, results){
+        if (err) throw err;
+        inquirer
+         .prompt([
+             {
+
+             }
+         ])
+    })
 }
+
+
+//display all employees by dept
+function allEmployeesDept(){
+
+};
+
+//display all employees by manager
+function allEmployeesMgr(){
+
+};
+
+//Add an employee
+function addEmployee(){
+
+};
+
+//Delete an employee
+function removeEmployee(){
+
+};
+
+//Update Employee Role
+function updateEmployeeRole(){
+
+};
+
+//update Employee Manager
+function updateEmployeeMgr(){
+
+};
 
 //=====================================
 //===========Objectives================
