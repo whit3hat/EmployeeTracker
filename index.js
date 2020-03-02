@@ -27,8 +27,51 @@ connection.connect(function(err) {
     start();
 });
 
-
 //inquirer Prompts about what user wants to do
+function start(){
+    connection.query('SELECT * FROM employee' , function(err, employee){
+        if (err) throw err;
+        
+        inquire
+            .prompt([
+                {
+                    name: 'employee',
+                    type: 'rawlist',
+                    choices: function(){
+                        var employeeArray =[];
+                        for (var i=0; i < results.length; i++){
+                            employeeArray.push(results[i].item_name);
+                        }
+                        return employeeArray;
+                    },
+                }
+            ])
+    })
+
+        function emplyeeSearch(){
+            inquire
+                .prompt([
+                    {
+                        name: 'department',
+                        type: 'input',
+                        message: 'Which department?'
+                    }
+                ])
+                .then(function(answer){
+                    connection.query("SELECT * FROM companyinfo_db.department WHERE ?", {
+                        department: answer.department
+                    }, (err, res) =>{
+                        if (err) {
+                            renderError(err);
+                        } else {
+                            renderResponse(res);
+                        }
+                    })
+                    start();
+                });
+        };
+
+};
 
 
 
