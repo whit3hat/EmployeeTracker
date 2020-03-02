@@ -1,5 +1,5 @@
 //Variables for the project
-const inquire = require('inquirer');
+const inquirer = require('inquirer');
 // const consoleTable = require('consle.table');
 // const figlet = require('figlet');
 const mysql = require('mysql');
@@ -31,13 +31,13 @@ connection.connect(function(err) {
 
 //inquirer Prompts about what user wants to do
 function start(){
-  inquire
+  inquirer
         .prompt([{
             type: 'list',
             name: 'choice',
             message: 'What would you like to do?',
             choices: ['View All Employees', new inquirer.Separator(),'View All Employees By Department', new inquirer.Separator(),'View All Employees By Manager', new inquirer.Separator(), 
-                    'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager']
+                    'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager',new inquirer.Separator()]
 
             },
         ]).then(answers => {  //Getting user response from above
@@ -63,6 +63,11 @@ function start(){
                 updateEmployeeMgr();
             }
     });
+}
+
+//search for all employees in DB
+function allEmployees(){
+    connection.query('SELECT * FROM employee')
 }
 
 //=====================================
