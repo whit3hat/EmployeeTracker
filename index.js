@@ -1,7 +1,7 @@
 //Variables for the project
 const inquirer = require('inquirer');
 // const consoleTable = require('consle.table');
-// const figlet = require('figlet');
+const figlet = require('figlet');
 const mysql = require('mysql');
 
 //mysql connection
@@ -31,6 +31,30 @@ connection.connect(function(err) {
 
 //inquirer Prompts about what user wants to do
 function start(){
+    figlet.text('Employee', {
+        font: 'epic',
+        horizontalLayout: 'default',
+        verticalLayout: 'default'
+    }, function(err, data){
+        if (err){
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        };
+        console.log(data);
+    });
+    figlet.text('Tracker', {
+        font: 'epic',
+        horizontalLayout: 'default',
+        verticalLayout: 'default'
+    }, function(err, data){
+        if (err){
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        };
+        console.log(data);
+    });
   inquirer
         .prompt([{
             type: 'list',
@@ -67,15 +91,12 @@ function start(){
 
 //search for all employees in DB
 function allEmployees(){
-    connection.query('SELECT * FROM employee', function(err, results){
+    connection.query('SELECT * FROM employee', function(err, res){
         if (err) throw err;
-        inquirer
-         .prompt([
-             {
-
-             }
-         ])
-    })
+       console.table(res);
+       connection.end();
+        });
+    start();
 }
 
 
