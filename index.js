@@ -23,15 +23,16 @@ var connection = mysql.createConnection({
 //connect to the mysql server and sql DB
 connection.connect(function(err) {
     if (err) throw err;
-    console.log('connected as id ' + connection.threadId);
+    //console.log('connected as id ' + connection.threadId);
     //run the start function after the connection is made to prompt the user
-  start();
+    init();
+    start();
+   
 });
 
-
-//inquirer Prompts about what user wants to do
-function start(){
-    figlet.text('Employee', {
+// function to run figlet before inquirer 
+const init = () =>
+     figlet.text('Employee', {
         font: 'epic',
         horizontalLayout: 'default',
         verticalLayout: 'default'
@@ -54,7 +55,11 @@ function start(){
             return;
         };
         console.log(data);
+        
     });
+//inquirer Prompts about what user wants to do
+function start(){
+   
   inquirer
         .prompt([{
             type: 'list',
