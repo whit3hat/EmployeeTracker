@@ -117,6 +117,33 @@ function allEmployeesMgr(){
 
 //Add an employee
 function addEmployee(){
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'firstName',
+                message: "Employee's First name:"
+                
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: "Employee's Last name:"
+            },
+            {
+                type: 'list',
+                name: 'role',
+                message: "Employees Role",
+                choices: ['Human Resources', 'Engineer', 'Project Manager']
+            },
+            {
+                type:'choice',
+                name: 'manager',
+                message: "Who is the employee's Manager:",
+                choices: ['Spencer', 'Mady', 'Connor']
+            }
+        ]),
+    connection.query("INSERT INTO employee VALUES ")
 
 };
 
