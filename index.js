@@ -1,6 +1,6 @@
 //Variables for the project
 const inquirer = require('inquirer');
-// const consoleTable = require('consle.table');
+//const consoleTable = require('consle.table');
 const figlet = require('figlet');
 const mysql = require('mysql');
 
@@ -98,7 +98,7 @@ function start(){
 function allEmployees(){
     connection.query('SELECT * FROM employee', function(err, res){
         if (err) throw err;
-       console.table(res);
+console.table(res);
        connection.end();
         });
     start();
@@ -142,14 +142,36 @@ function addEmployee(){
                 message: "Who is the employee's Manager:",
                 choices: ['Spencer', 'Mady', 'Connor']
             }
-        ]),
+        ]).then(res => {
+            console.log(res);
+        })
     connection.query("INSERT INTO employee VALUES ")
 
 };
 
 //Delete an employee
 function removeEmployee(){
-
+    //get the list of current employees
+    connection.query('SELECT first_name, last_name FROM employee', function(err,res){
+        if (err) throw err;
+        Object.keys(res).forEach(function(key){
+            var row = res[key];
+            // console.log(row.first_name);
+    
+    //passing the MySQL query list of employees to inquirer so you can chose
+    inquirer
+        .prompt([
+            {
+                type:'list',
+                message: 'Which Employee would you like to remove',
+                choices: row.first_name,
+                name: 'removeEmployee'
+                
+            }
+        ])
+    });
+        
+})
 };
 
 //Update Employee Role
