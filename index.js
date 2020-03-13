@@ -141,11 +141,20 @@ function addEmployee(){
                 name: 'manager',
                 message: "Who is the employee's Manager:",
                 choices: ['Spencer', 'Mady', 'Connor']
+            },
+            {
+                type:'input',
+                name: 'id',
+                message: 'Enter employee id number'
             }
         ]).then(res => {
             console.log(res);
-        })
-    connection.query("INSERT INTO employee VALUES ")
+            connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('firstName', 'lastName', 'role', 'manager') " , function(err, res){
+                if (err) throw err;
+
+            });
+        });
+   
 
 };
 
