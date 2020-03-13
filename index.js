@@ -44,9 +44,9 @@ async function start(){
             message: 'What would you like to do?',
             choices: ['View All Employees', new inquirer.Separator(),'View All Employees By Department', new inquirer.Separator(),'View All Employees By Manager', new inquirer.Separator(), 
                     'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager',new inquirer.Separator()]
-
+        //Getting user response from above
             },
-        ]).then(answers => {  //Getting user response from above
+        ]).then(answers => {  
             if ( answers.choice === 'View All Employees'){
                 allEmployees();
             }
@@ -72,12 +72,14 @@ async function start(){
 }
 
 //search for all employees in DB
-function allEmployees(){
-    connection.query('SELECT * FROM employee', function(err, res){
-        if (err) throw err;
-console.table(res);
-       connection.end();
-        });
+async function allEmployees(){
+    //using the db class we are runing the query written there and returning the value 'employees'
+const employees = await db.allEmployees();
+
+console.log("\n");
+console.table(employees);
+
+
     start();
 }
 
