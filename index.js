@@ -37,13 +37,47 @@ const init = () =>
 async function start(){
    
   inquirer
-        const choice = await prompt([
+        const { choice }  = await prompt([
             {
             type: 'list',
             name: 'choice',
             message: 'What would you like to do?',
-            choices: ['View All Employees', new inquirer.Separator(),'View All Employees By Department', new inquirer.Separator(),'View All Employees By Manager', new inquirer.Separator(), 
-                    'Add Employee', new inquirer.Separator(),'Remove Employee',new inquirer.Separator(),'Update Employee Role', new inquirer.Separator(), 'Update Employee Manager',new inquirer.Separator()]
+            choices: [
+                {
+                    name:'View All Employees',
+                    value: "View_All"
+                },
+                 new inquirer.Separator(),
+                {
+                     name:'View All Employees By Department',
+                     value: 'View_By_Dept'
+                },
+                  new inquirer.Separator(),
+               {
+                 name: 'View All Employees By Manager',
+                 value: 'View_By_Manager'
+               },
+                 new inquirer.Separator(), 
+               {
+                name: 'Add Employee',
+                value: 'Add_Employee'
+               },
+                new inquirer.Separator(),
+              {
+                name: 'Remove Employee',
+                value: 'Remove_Employee'
+               },
+                new inquirer.Separator(),
+              {
+                name:'Update Employee Role',
+                value: 'Update_Role'
+               },     
+               new inquirer.Separator(),  
+               {
+                   name:'Update Employee Manager',
+                   value:'Update_Manager'
+               },   
+                new inquirer.Separator()]
         //Getting user response from above
             },
         ]).then(answers => {  
