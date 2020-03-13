@@ -2,8 +2,9 @@
 const inquirer = require('inquirer');
 //const consoleTable = require('consle.table');
 const figlet = require('figlet');
+cosnt db = require('./db');
 
-init();
+
     start();
 // function to run figlet before inquirer 
 const init = () =>
