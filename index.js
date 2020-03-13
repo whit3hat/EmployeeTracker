@@ -2,10 +2,9 @@
 const inquirer = require('inquirer');
 //const consoleTable = require('consle.table');
 const figlet = require('figlet');
-cosnt db = require('./db');
+const db = require('./db');
 
 
-    start();
 // function to run figlet before inquirer 
 const init = () =>
      figlet.text('Employee', {
@@ -31,13 +30,15 @@ const init = () =>
             return;
         };
         console.log(data);
-        
+    //starts the function to as the questions
+        start();
     });
 //inquirer Prompts about what user wants to do
-function start(){
+async function start(){
    
   inquirer
-        .prompt([{
+        const choice = await prompt([
+            {
             type: 'list',
             name: 'choice',
             message: 'What would you like to do?',
