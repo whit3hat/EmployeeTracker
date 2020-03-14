@@ -1,5 +1,5 @@
 //Variables for the project
-const inquirer = require('inquirer');
+const { prompt } = require('inquirer');
 //const consoleTable = require('consle.table');
 const figlet = require('figlet');
 const db = require('./db');
@@ -36,7 +36,6 @@ const init = () =>
 //inquirer Prompts about what user wants to do
 async function start(){
    
-  inquirer
         const { choice }  = await prompt([
             {
             type: 'list',
@@ -44,66 +43,61 @@ async function start(){
             message: 'What would you like to do?',
             choices: [
                 {
-                    name:'View All Employees',
-                    value: "View_All"
+                name:'View All Employees',
+                value: "View_All"
                 },
-                 new inquirer.Separator(),
                 {
-                     name:'View All Employees By Department',
-                     value: 'View_By_Dept'
+                name:'View All Employees By Department',
+                value: 'View_By_Dept'
                 },
-                  new inquirer.Separator(),
-               {
+                {
                  name: 'View All Employees By Manager',
                  value: 'View_By_Manager'
-               },
-                 new inquirer.Separator(), 
-               {
+                },
+                {
                 name: 'Add Employee',
                 value: 'Add_Employee'
-               },
-                new inquirer.Separator(),
-              {
+                },
+                {
                 name: 'Remove Employee',
                 value: 'Remove_Employee'
-               },
-                new inquirer.Separator(),
-              {
+                },
+                {
                 name:'Update Employee Role',
                 value: 'Update_Role'
                },     
-               new inquirer.Separator(),  
                {
-                   name:'Update Employee Manager',
-                   value:'Update_Manager'
+               name:'Update Employee Manager',
+               value:'Update_Manager'
                },   
-                new inquirer.Separator()]
-        //Getting user response from above
-            },
-        ]).then(answers => {  
-            if ( answers.choice === 'View All Employees'){
-                allEmployees();
-            }
-            else if(answers.choice === 'View All Employees By Department'){
+               {
+                name: 'Quit',
+                value: 'Quit'
+               },
+        ]
+       
+     }, //Getting user response from above
+]); 
+    switch(choice) {  
+            case  'View All Employees':
+               return allEmployees();
+            case 'View All Employees By Department':
                 allEmployeesDept();
-            }
-            else if(answers.choice === 'View All Employees By Manager'){
+            
+           case 'View All Employees By Manager':
                 allEmployeesMgr();
-            }
-            else if(answers.choice === 'Add Employee'){
+          case 'Add Employee':
                 addEmployee();
-            }
-            else if(answers.choice === 'Remove Employee'){
+          case 'Remove Employee':
                 removeEmployee();
-            }
-            else if(answers.choice === 'Update Employee Role'){
+          case 'Update Employee Role':
                 updateEmployeeRole();
-            }
-            else if(answers.choice === 'Update Employee Manager'){
+         case 'Update Employee Manager':
                 updateEmployeeMgr();
+        default:
+            return quit();
             }
-    });
-}
+    }
 
 //search for all employees in DB
 async function allEmployees(){
@@ -206,6 +200,11 @@ function updateEmployeeMgr(){
 
 };
 
+//ends the application
+function quit(){
+    console.log('Bye!');
+    process.exit();
+}
 //=====================================
 //===========Objectives================
 //add departments
