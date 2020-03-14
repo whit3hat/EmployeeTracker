@@ -1,8 +1,8 @@
 //Variables for the project
 const { prompt } = require('inquirer');
-//const consoleTable = require('consle.table');
 const figlet = require('figlet');
 const db = require('./db');
+require('console.table');
 
 
 // function to run figlet before inquirer 
@@ -33,6 +33,7 @@ const init = () =>
     //starts the function to as the questions
         start();
     });
+
 //inquirer Prompts about what user wants to do
 async function start(){
    
@@ -78,29 +79,28 @@ async function start(){
        
      }, //Getting user response from above
 ]); 
-    switch(choice) {  
-            case  'View All Employees':
-               return allEmployees();
-            case 'View All Employees By Department':
+    switch (choice) {  
+            case  'View_All':
+               return viewEmployees();
+            case 'View_By_Dept':
                 allEmployeesDept();
-            
-           case 'View All Employees By Manager':
+            case 'View_By_Manager':
                 allEmployeesMgr();
-          case 'Add Employee':
+            case 'Add_Employee':
                 addEmployee();
-          case 'Remove Employee':
+            case 'Remove_Employee':
                 removeEmployee();
-          case 'Update Employee Role':
+            case 'Update_Role':
                 updateEmployeeRole();
-         case 'Update Employee Manager':
-                updateEmployeeMgr();
-        default:
-            return quit();
+            case 'Update_Manager':
+                updateMgr();
+            default:
+               return quit();
             }
     }
 
 //search for all employees in DB
-async function allEmployees(){
+async function viewEmployees(){
     //using the db class we are runing the query written there and returning the value 'employees'
 const employees = await db.allEmployees();
 
@@ -113,7 +113,7 @@ console.table(employees);
 
 
 //display all employees by dept
-function allEmployeesDept(){
+async function allEmployeesDept(){
 
 };
 
@@ -196,7 +196,7 @@ function updateEmployeeRole(){
 };
 
 //update Employee Manager
-function updateEmployeeMgr(){
+function updateMgr(){
 
 };
 
