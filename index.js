@@ -120,7 +120,7 @@ async function allEmployeesDept(){
         name: name,
         value: id
     }))
-
+//ask the user which dept they want to find the employees for
     const { deptId } = await prompt([
         {
             type: 'list',
@@ -131,16 +131,42 @@ async function allEmployeesDept(){
     ]);
 
     const employees = await db.findEmployeeDept(deptId);
-
+//Display the employees in the table
     console.log('\n');
     console.table(employees);
-    
+//Start the questions over again 
     start();
 };
 
 //display all employees by manager
-function allEmployeesMgr(){
+async function allEmployeesMgr(){
+    const managers = await db.allEmployees();
 
+    const mgrChoices = managers.map(({ id, first_name, last_name}) => ({
+        name:  `${first_name} ${last_name}`,
+        value: id
+    }));
+//Ask which manager they want
+    const { mgrId } = await prompt([
+        {
+            type: 'list',
+            name: 'mgrId',
+            message: 'Which employee do you want to see the direct reports for?',
+            choices: mgrChoices
+        }
+    ]);
+//Search for the managers the return if they have the employees or not
+    const employees = await db.findAllMgrs(mgrId);
+
+    console.log('\n');
+
+    if (employees.length === 0) {
+        console.log('The selectd employee has no direct reports');
+    } else {
+        console.table(employees);
+    }
+//Run the application again for a new choice
+    start();
 };
 
 //Add an employee
