@@ -114,7 +114,28 @@ console.table(employees);
 
 //display all employees by dept
 async function allEmployeesDept(){
+    const dept = await db.findAllDepts();
 
+    const deptChoices = dept.mapt(({ id, name}) => ({
+        name: name,
+        value: id
+    }))
+
+    const { deptId } = await prompt([
+        {
+            type: 'list',
+            name: 'deptId',
+            message: 'Which department would you like to see employees for?',
+            choices: deptChoices
+        }
+    ]);
+
+    const employees = await db.findEmployeeDept(deptId);
+
+    console.log('\n');
+    console.table(employees);
+    
+    start();
 };
 
 //display all employees by manager
