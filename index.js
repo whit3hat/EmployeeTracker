@@ -260,7 +260,45 @@ function updateEmployeeRole(){
 };
 
 //update Employee Manager
-function updateMgr(){
+async function updateMgr(){
+//run the query to get all the employees
+    const employees = await db.allEmployees();
+//pull out the id, first and last name from the query
+    const employeeChoice = employees.map(({ id, first_name, last_name })=> ({
+        name: `${first_name} ${last_name}`,
+        value: id
+    }));
+// ask which employee the user wants to update from the query above
+    const { employeeId } = await prompt([
+        {
+            type: 'list',
+            name: 'employeeId',
+            message: "Which employee's manager do you want to update?",
+            choices: employeeChoice
+        }
+    ]);
+//query to find all the managers
+    const manager = await db.findAllMgrs(employeeId);
+//pull out the id, first and last name of the query above of managers
+    const mgrChoice = manager.map(({ id, first_name, last_name}) => ({
+        name: `${first_name} ${last_name}`,
+        value: id
+    }));
+//show the info the managers and shows which one they want to add the employee too
+    const { managerId } = await prompt([
+        {
+            type: 'list',
+            name: 'managerId',
+            message: "Which employee do you want to set as a manager for the selected employee?",
+            choices: mgrChoice
+        }
+    ]);
+//update the employee and maanger information
+    await db.updateEmployeeManager(employeeId, managerId);
+    
+    console.log("Updated employee's manager");
+//run the first function again to ask all the questions
+    start();
 
 };
 
