@@ -255,8 +255,44 @@ async function removeEmployee(){
 };
 
 //Update Employee Role
-function updateEmployeeRole(){
+async function updateEmployeeRole(){
+    const employee = await db.allEmployees();
+//get all the employees then pull out the id, first and last name of each
+    const employeeChoice = employee.map(({ id, first_name, last_name}) => ({
+        name: `${first_name} ${last_name}`,
+        value: id
+    }));
+//ask which employee you want to update their role
+    const { employeeId } = await prompt([
+        {
+            type: 'list',
+            name: 'employeeId',
+            message: "Which employee's role do you want to update?",
+            choices: employeeChoice
+        }
+    ]);
+//pull all the roles in with the function
+    const roles = await db.findAllRole();
 
+    const roleChoice = roles.map(({ id, title}) => ({
+        name: title,
+        value: id
+    }));
+//ask which role you want change the role to
+    const { roleId } = await prompt([
+        {
+            type: "list",
+            name: "roleId",
+            message: "Which role do you want to assign the employee?",
+            choices: roleChoice
+        }
+    ]);
+//call the update role function and pass the employee id and role id
+    await db.updateEmployeeRole(employeeId, roleId);
+//let the user know you update the employees role
+    console.log("Updated employee's role");
+
+    start();
 };
 
 //update Employee Manager
