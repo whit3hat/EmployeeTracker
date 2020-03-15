@@ -230,28 +230,28 @@ async function addEmployee(){
    };
 
 //Delete an employee
-function removeEmployee(){
-    //get the list of current employees
-    connection.query('SELECT first_name, last_name FROM employee', function(err,res){
-        if (err) throw err;
-        Object.keys(res).forEach(function(key){
-            var row = res[key];
-            // console.log(row.first_name);
-    
-    //passing the MySQL query list of employees to inquirer so you can chose
-    inquirer
-        .prompt([
-            {
-                type:'list',
-                message: 'Which Employee would you like to remove',
-                choices: row.first_name,
-                name: 'removeEmployee'
-                
-            }
-        ])
-    });
-        
-})
+async function removeEmployee(){
+    const employees = await db.allEmployees();
+// run the function to get all employees then filter out for id, first name and last name
+    const employeeChoice = employees.map(({ id, first_name, last_name }) => ({
+        name: `${first_name} ${last_name}`,
+        value: id
+    }));
+//show the employee list from above and ask which you want to remove
+    const { employeeId } = await prompt([
+        {
+            type: 'list',
+            name: 'employeeId',
+            message: 'Which employee do you want to fire?',
+            choices: employeeChoice
+        }
+    ]);
+//run the remove function from the db folder and pass the employee id to it
+    await db.removeEmployee(employeeId);
+//return that the employee has been removed
+    console.log('Fired employee from the company');
+//run the application again
+    start();
 };
 
 //Update Employee Role
