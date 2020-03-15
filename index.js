@@ -170,47 +170,64 @@ async function allEmployeesMgr(){
 };
 
 //Add an employee
-function addEmployee(){
-    inquirer
-        .prompt([
+async function addEmployee(){
+
+//Create the variables for roles and employee
+    const roles = await db.findAllRole();
+    const employees = await db.allEmployees();
+//Get the employee basic information (first name and last name)
+    const employee = await
+        prompt([
             {
                 type: 'input',
                 name: 'firstName',
-                message: "Employee's First name:"
+                message: "Whats the employees first name?"
                 
             },
             {
                 type: 'input',
                 name: 'lastName',
-                message: "Employee's Last name:"
-            },
-            {
-                type: 'list',
-                name: 'role',
-                message: "Employees Role",
-                choices: ['Human Resources', 'Engineer', 'Project Manager']
-            },
-            {
-                type:'choice',
-                name: 'manager',
-                message: "Who is the employee's Manager:",
-                choices: ['Spencer', 'Mady', 'Connor']
-            },
-            {
-                type:'input',
-                name: 'id',
-                message: 'Enter employee id number'
+                message: "Whats the employees last name?"
             }
-        ]).then(res => {
-            console.log(res);
-            connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('firstName', 'lastName', 'role', 'manager') " , function(err, res){
-                if (err) throw err;
-
-            });
+        ]);
+//Get the list of roles
+        const roleChoice = roles.map(({ id, title }) => ({
+            name: title,
+            value: id
+        }));
+//Ask which role from the call above 
+        const { roleId } = await prompt({
+            type: 'list',
+            name: 'roleId',
+            message: 'What is the employees role?',
+            choices: roleChoice
         });
-   
+           employee.role_id = roleId;
+//Do the query into the db to get the managers list
+        const mgrChoice = employees.map(({ id, first_name, last_name}) => ({
+            name:  `${first_name} ${last_name}`,
+            value: id
+        }));
 
-};
+        mgrChoice.unshift({ name: 'None', value: null });
+//Ask them which manager will be above the client
+        const { mgrId } = await prompt({
+            type: 'list',
+            name: 'mgrId',
+            message: "Who is the employee's manager?",
+            choices: mgrChoice
+        });
+
+         employee.manager_id = mgrId;
+
+         await db.createEmployee(employee);
+//Adde the employee to the db, then let the user know the import is completed
+         console.log(
+                `Added ${employee.first_name} ${employee.last_name} to the database`
+         );
+//run the application again to ask what is next
+         start();
+   };
 
 //Delete an employee
 function removeEmployee(){
