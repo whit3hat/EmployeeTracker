@@ -5,9 +5,9 @@ const db = require('./db');
 require('console.table');
 
 
-
+init();
 // function to run figlet before inquirer 
-const init = () =>
+function init () {
      figlet.text('Employee', {
         font: 'epic',
         horizontalLayout: 'default',
@@ -34,7 +34,7 @@ const init = () =>
     //starts the function to as the questions
         mainPrompts();
     });
-
+}
 //inquirer Prompts about what user wants to do
 async function mainPrompts() {
    const { choice }  = await prompt([
