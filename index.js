@@ -5,6 +5,7 @@ const db = require('./db');
 require('console.table');
 
 
+
 // function to run figlet before inquirer 
 const init = () =>
      figlet.text('Employee', {
@@ -31,13 +32,12 @@ const init = () =>
         };
         console.log(data);
     //starts the function to as the questions
-        start();
+        mainPrompts();
     });
 
 //inquirer Prompts about what user wants to do
-async function start(){
-   
-        const { choice }  = await prompt([
+async function mainPrompts() {
+   const { choice }  = await prompt([
             {
             type: 'list',
             name: 'choice',
@@ -77,23 +77,25 @@ async function start(){
                },
         ]
        
-     }, //Getting user response from above
+     }, 
 ]); 
+
+//Getting user response from above
     switch (choice) {  
             case  'View_All':
                return viewEmployees();
             case 'View_By_Dept':
-                allEmployeesDept();
+                return allEmployeesDept();
             case 'View_By_Manager':
-                allEmployeesMgr();
+               return allEmployeesMgr();
             case 'Add_Employee':
-                addEmployee();
+                return addEmployee();
             case 'Remove_Employee':
-                removeEmployee();
+               return removeEmployee(); 
             case 'Update_Role':
-                updateEmployeeRole();
+              return  updateEmployeeRole();
             case 'Update_Manager':
-                updateMgr();
+               return updateMgr();
             default:
                return quit();
             }
@@ -102,13 +104,13 @@ async function start(){
 //search for all employees in DB
 async function viewEmployees(){
     //using the db class we are runing the query written there and returning the value 'employees'
-const employees = await db.allEmployees();
+    const employees = await db.allEmployees();
 
-console.log("\n");
-console.table(employees);
+    console.log("\n");
+    console.table(employees);
 
 
-    start();
+    mainPrompts();
 }
 
 
@@ -119,7 +121,7 @@ async function allEmployeesDept(){
     const deptChoices = dept.mapt(({ id, name}) => ({
         name: name,
         value: id
-    }))
+    }));
 //ask the user which dept they want to find the employees for
     const { deptId } = await prompt([
         {
