@@ -27,4 +27,4 @@ connection.connect(function(err) {
 //use to allow for async/await options
 connection.query = util.promisify(connection.query);
 
-module.expoerts = connection;
+module.exports = connection;

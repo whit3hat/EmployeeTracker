@@ -118,7 +118,7 @@ async function viewEmployees(){
 async function allEmployeesDept(){
     const dept = await db.findAllDepts();
 
-    const deptChoices = dept.mapt(({ id, name}) => ({
+    const deptChoices = dept.map(({ id, name}) => ({
         name: name,
         value: id
     }));
@@ -137,7 +137,7 @@ async function allEmployeesDept(){
     console.log('\n');
     console.table(employees);
 //Start the questions over again 
-    start();
+    mainPrompts();
 };
 
 //display all employees by manager
@@ -168,7 +168,7 @@ async function allEmployeesMgr(){
         console.table(employees);
     }
 //Run the application again for a new choice
-    start();
+    mainPrompts();
 };
 
 //Add an employee
@@ -182,13 +182,13 @@ async function addEmployee(){
         prompt([
             {
                 type: 'input',
-                name: 'firstName',
+                name: 'first_name',
                 message: "Whats the employees first name?"
                 
             },
             {
                 type: 'input',
-                name: 'lastName',
+                name: 'last_name',
                 message: "Whats the employees last name?"
             }
         ]);
@@ -215,7 +215,7 @@ async function addEmployee(){
 //Ask them which manager will be above the client
         const { mgrId } = await prompt({
             type: 'list',
-            name: 'mgrId',
+            name: 'manager_id',
             message: "Who is the employee's manager?",
             choices: mgrChoice
         });
@@ -228,7 +228,7 @@ async function addEmployee(){
                 `Added ${employee.first_name} ${employee.last_name} to the database`
          );
 //run the application again to ask what is next
-         start();
+         mainPrompts();
    };
 
 //Delete an employee
@@ -253,7 +253,7 @@ async function removeEmployee(){
 //return that the employee has been removed
     console.log('Fired employee from the company');
 //run the application again
-    start();
+    mainPrompts();
 };
 
 //Update Employee Role
@@ -294,7 +294,7 @@ async function updateEmployeeRole(){
 //let the user know you update the employees role
     console.log("Updated employee's role");
 
-    start();
+    mainPrompts();
 };
 
 //update Employee Manager
@@ -332,11 +332,11 @@ async function updateMgr(){
         }
     ]);
 //update the employee and maanger information
-    await db.updateEmployeeManager(employeeId, managerId);
+    await db.updateEmployeeManager(managerId, employeeId);
     
     console.log("Updated employee's manager");
 //run the first function again to ask all the questions
-    start();
+    mainPrompts();
 
 };
 
